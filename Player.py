@@ -33,6 +33,12 @@ class Player:
 
         return self.x, self.y
 
+    def set_x(self, x):
+        self.x = x
+
+    def set_y(self, y):
+        self.y = y
+
     def jump(self):
         if not self.isJump:
             self.dY = -15

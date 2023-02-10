@@ -50,6 +50,10 @@ def createMapOne():
 def draw_mouse_coords():
     textSurface = myFont.render(str(pygame.mouse.get_pos()), True, (255,255,255))
     world.blit(textSurface, (50, 30))
+    textSurface = myFont.render(str(players[0].get_current_allele()), True, (255,255,255))
+    world.blit(textSurface, (50, 70))
+    textSurface = myFont.render(str(len(players)), True, (255, 255, 255))
+    world.blit(textSurface, (50, 110))
 
 def clear_screen():
     pygame.draw.rect(world, (0, 0, 0), (0, 0, pygame.Surface.get_height(world), pygame.Surface.get_width(world)))
@@ -70,6 +74,22 @@ def input():
         camera_pos = (camera_pos[0], 0)
 
 
+def sort_ai_by_score():
+    for i in range(len(players)-1):
+        for j in range(len(players)-2):
+            playerOne = players[j]
+            playerTwo = players[j+1]
+            if playerOne.get_score() < playerTwo.get_score():
+                temp = playerOne
+                players[j] = playerTwo
+                players[j+1] = temp
+
+# no worky
+def kill_bottom_half():
+    global players
+    newList = players[0:int(len(players)/2)]
+    players.clear()
+    players = newList
 
 createMapOne()
 createPlayerAI()
@@ -95,6 +115,13 @@ while not simOver:
     # player update code
     for p in players:
         p.act()
+
+    if players[0].is_done():
+        print("done")
+        sort_ai_by_score()
+        kill_bottom_half()
+        for p in players:
+            p.reset()
 
 
 
