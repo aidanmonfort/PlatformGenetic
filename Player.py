@@ -15,6 +15,7 @@ class Player:
 
     def setMap(self, map):
         self.map = map
+        self.captured_coins = [False for i in range(len(map.coins))]
 
     def step(self):
         self.dY -= self.map.getGrav()
@@ -47,8 +48,9 @@ class Player:
     def checkCoinCollisions(self):
         for c in self.map.coins:
             if c.getCollisionRect().colliderect(self.getCollisionRect()):
-                self.map.coins.remove(c)
                 self.score += 1
+                self.captured_coins[self.map.coins.index(c)] = True
+                c.changeColor(self.color)
 
     def stepRight(self):
         self.dX = 10
@@ -95,6 +97,6 @@ class Player:
         return False
 
     def get_score(self):
-        return self.score
+        return len([c for c in self.captured_coins if c])
 
 

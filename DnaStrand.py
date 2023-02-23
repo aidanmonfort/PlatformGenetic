@@ -4,10 +4,12 @@ import time
 from Player import *
 
 class PlayerAI:
+
+    count = 400
+
     def __init__(self):
         self.player = Player((rand.randint(0, 255), rand.randint(0, 255), rand.randint(0, 255)))
         self.strand = []
-        self.count = 100
         self.createSequence()
         self.delay = 100_000_000
         self.currentIndex = 0
@@ -15,7 +17,7 @@ class PlayerAI:
         self.x_distance_covered = 0
 
     def get_score(self):
-        return self.x_distance_covered
+        return (self.player.get_score() * 350) + self.x_distance_covered
 
     def get_current_allele(self):
         return self.currentIndex
@@ -25,6 +27,7 @@ class PlayerAI:
 
     def reset(self):
         self.currentIndex = 0
+        self.player.captured_coins = [False for i in range(len(self.player.map.coins))]
         self.player.set_x(400)
         self.player.set_y(400)
 
@@ -52,6 +55,7 @@ class PlayerAI:
             self.nextAct = time.time_ns() + self.delay
             # print(str(self.currentIndex) + ":" + str(self.strand[self.currentIndex]))
             self.currentIndex += 1
+            self.x_distance_covered = self.player.x - 400
 
         return self.player.step()
 
@@ -60,3 +64,6 @@ class PlayerAI:
 
     def setMap(self, map):
         self.player.setMap(map)
+
+    def setDNA(self, dna):
+        self.strand = dna

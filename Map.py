@@ -2,6 +2,7 @@ import pygame
 from Platform import *
 
 class Map:
+
     def __init__(self, grav=-.5):
         self.platforms = []
         self.coins = []
@@ -23,7 +24,7 @@ class Map:
         for p in self.platforms:
             p.draw(screen)
         for c in self.coins:
-            c.draw(screen)
+            c.draw(screen, self.coins.index(c))
 
     def get_hit_box_list(self):
         hitBoxes = []
